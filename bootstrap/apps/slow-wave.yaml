@@ -11,11 +11,7 @@ spec:
     repoURL: https://github.com/argoproj/argocd-example-apps.git
     targetRevision: HEAD
     path: sync-waves
-    # WE ARE OVERRIDING THE VALUES TO FORCE A SLEEP
-    helm:
-      parameters:
-      - name: "delay"
-        value: "30"  # This forces the first wave to take 30 seconds!
+    # REMOVED THE HELM BLOCK - It was causing the crash!
   destination:
     server: https://kubernetes.default.svc
     namespace: slow-wave-ns
