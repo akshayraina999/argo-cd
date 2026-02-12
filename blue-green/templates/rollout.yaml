@@ -8,7 +8,7 @@ spec:
     blueGreen:
       activeService: blue-green-helm-guestbook
       previewService: blue-green-helm-guestbook-preview
-      autoPromotionEnabled: false
+      autoPromotionEnabled: true
   selector:
     matchLabels:
       app: blue-green-helm-guestbook
