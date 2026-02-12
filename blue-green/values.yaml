@@ -1,8 +1,8 @@
 replicaCount: 2
 
 image:
-  repository: ks-guestbook-demo
-  tag: "0.2"
+  repository: argoproj/rollouts-demo
+  tag: green
   pullPolicy: IfNotPresent
 
 service:
