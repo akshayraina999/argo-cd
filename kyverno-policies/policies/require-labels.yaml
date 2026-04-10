@@ -1,0 +1,23 @@
+# Policy: Require Labels
+# Purpose: Ensures all pods have mandatory labels for governance, monitoring, and cost tracking
+# Benefit: Helps in observability, cost allocation, and resource organization
+
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-labels
+spec:
+  validationFailureAction: enforce
+  rules:
+    - name: check-labels
+      match:
+        resources:
+          kinds:
+            - Pod
+      validate:
+        message: "Labels 'app' and 'env' are required"
+        pattern:
+          metadata:
+            labels:
+              app: "?*"
+              env: "?*"

@@ -1,0 +1,22 @@
+# Policy: Restrict Image Registry
+# Purpose: Allows only trusted container registries
+# Benefit: Prevents supply chain attacks and unauthorized images
+
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-image-registry
+spec:
+  validationFailureAction: enforce
+  rules:
+    - name: allowed-registry
+      match:
+        resources:
+          kinds:
+            - Pod
+      validate:
+        message: "Only images from myregistry.com allowed"
+        pattern:
+          spec:
+            containers:
+              - image: "myregistry.com/*"

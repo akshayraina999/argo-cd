@@ -1,0 +1,23 @@
+# Policy: Enforce Non-Root Execution
+# Purpose: Ensures containers do not run as root user
+# Benefit: Reduces privilege escalation risks
+
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce-non-root
+spec:
+  validationFailureAction: enforce
+  rules:
+    - name: non-root
+      match:
+        resources:
+          kinds:
+            - Pod
+      validate:
+        message: "Containers must run as non-root user"
+        pattern:
+          spec:
+            containers:
+              - securityContext:
+                  runAsNonRoot: true
