@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/akshayraina999/argo-cd.git
     targetRevision: main
-    path: kyverno/policies
+    path: kyverno-policies/policies
   destination:
     server: https://kubernetes.default.svc
     namespace: kyverno
