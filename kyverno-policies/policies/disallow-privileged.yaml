@@ -46,6 +46,7 @@ spec:
           - kube-system
           - argocd
           - kyverno
+          - keda
       validate:
         message: "Privileged containers are not allowed."
         pattern:

@@ -46,6 +46,7 @@ spec:
           - kube-system
           - argocd
           - kyverno
+          - keda
       validate:
         message: "Liveness and readiness probes are required."
         pattern:

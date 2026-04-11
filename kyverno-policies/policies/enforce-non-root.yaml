@@ -47,6 +47,7 @@ spec:
           - kube-system
           - argocd
           - kyverno
+          - keda
       validate:
         message: "Containers must run as non-root."
         pattern:

@@ -45,6 +45,7 @@ spec:
           - kube-system
           - argocd
           - kyverno
+          - keda
       generate:
         kind: NetworkPolicy
         apiVersion: networking.k8s.io/v1

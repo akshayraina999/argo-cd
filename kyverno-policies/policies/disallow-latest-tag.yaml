@@ -21,6 +21,7 @@ spec:
           - kube-system
           - argocd
           - kyverno
+          - keda
       validate:
         message: "Using 'latest' tag is not allowed"
         pattern:

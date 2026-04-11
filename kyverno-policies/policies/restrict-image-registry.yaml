@@ -45,6 +45,7 @@ spec:
           - kube-system
           - argocd
           - kyverno
+          - keda
       validate:
         message: "Only images from allowed registry are permitted."
         pattern:
