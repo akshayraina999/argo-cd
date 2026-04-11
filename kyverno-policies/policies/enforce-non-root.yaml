@@ -2,22 +2,54 @@
 # Purpose: Ensures containers do not run as root user
 # Benefit: Reduces privilege escalation risks
 
+# apiVersion: kyverno.io/v1
+# kind: ClusterPolicy
+# metadata:
+#   name: enforce-non-root
+# spec:
+#   validationFailureAction: enforce
+#   rules:
+#     - name: non-root
+#       match:
+#         resources:
+#           kinds:
+#             - Pod
+#       validate:
+#         message: "Containers must run as non-root user"
+#         pattern:
+#           spec:
+#             containers:
+#               - securityContext:
+#                   runAsNonRoot: true
+
+
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: enforce-non-root
 spec:
   validationFailureAction: enforce
+  background: true
   rules:
-    - name: non-root
+    - name: run-as-non-root
       match:
         resources:
           kinds:
             - Pod
+          namespaces:
+            - default
+            - dev
+            - staging
+      exclude:
+        resources:
+          namespaces:
+          - keda
+          - kube-system
+          - argocd
+          - kyverno
       validate:
-        message: "Containers must run as non-root user"
+        message: "Containers must run as non-root."
         pattern:
           spec:
-            containers:
-              - securityContext:
-                  runAsNonRoot: true
+            securityContext:
+              runAsNonRoot: true

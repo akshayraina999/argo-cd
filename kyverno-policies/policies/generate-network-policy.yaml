@@ -2,21 +2,55 @@
 # Purpose: Automatically creates a default deny network policy for new namespaces
 # Benefit: Enforces zero-trust networking by default
 
+# apiVersion: kyverno.io/v1
+# kind: ClusterPolicy
+# metadata:
+#   name: generate-network-policy
+# spec:
+#   rules:
+#     - name: default-deny
+#       match:
+#         resources:
+#           kinds:
+#             - Namespace
+#       generate:
+#         kind: NetworkPolicy
+#         name: default-deny
+#         namespace: "{{request.object.metadata.name}}"
+#         data:
+#           spec:
+#             podSelector: {}
+#             policyTypes:
+#               - Ingress
+#               - Egress
+
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: generate-network-policy
 spec:
   rules:
-    - name: default-deny
+    - name: default-deny-network-policy
       match:
         resources:
           kinds:
             - Namespace
+          names:
+            - dev
+            - staging
+      exclude:
+        resources:
+          namespaces:
+          - keda
+          - kube-system
+          - argocd
+          - kyverno
       generate:
         kind: NetworkPolicy
+        apiVersion: networking.k8s.io/v1
         name: default-deny
         namespace: "{{request.object.metadata.name}}"
+        synchronize: true
         data:
           spec:
             podSelector: {}

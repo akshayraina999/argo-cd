@@ -2,20 +2,54 @@
 # Purpose: Enforces CPU and memory limits for all containers
 # Benefit: Prevents resource exhaustion and improves cluster stability
 
+# apiVersion: kyverno.io/v1
+# kind: ClusterPolicy
+# metadata:
+#   name: require-resource-limits
+# spec:
+#   validationFailureAction: enforce
+#   rules:
+#     - name: check-resources
+#       match:
+#         resources:
+#           kinds:
+#             - Pod
+#       validate:
+#         message: "CPU and memory limits are required"
+#         pattern:
+#           spec:
+#             containers:
+#               - resources:
+#                   limits:
+#                     memory: "?*"
+#                     cpu: "?*"
+
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: require-resource-limits
 spec:
   validationFailureAction: enforce
+  background: true
   rules:
     - name: check-resources
       match:
         resources:
           kinds:
             - Pod
+          namespaces:
+            - default
+            - dev
+            - staging
+      exclude:
+        resources:
+          namespaces:
+          - keda
+          - kube-system
+          - argocd
+          - kyverno
       validate:
-        message: "CPU and memory limits are required"
+        message: "CPU and memory limits are required."
         pattern:
           spec:
             containers:

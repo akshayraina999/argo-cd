@@ -2,21 +2,52 @@
 # Purpose: Allows only trusted container registries
 # Benefit: Prevents supply chain attacks and unauthorized images
 
+# apiVersion: kyverno.io/v1
+# kind: ClusterPolicy
+# metadata:
+#   name: restrict-image-registry
+# spec:
+#   validationFailureAction: enforce
+#   rules:
+#     - name: allowed-registry
+#       match:
+#         resources:
+#           kinds:
+#             - Pod
+#       validate:
+#         message: "Only images from myregistry.com allowed"
+#         pattern:
+#           spec:
+#             containers:
+#               - image: "myregistry.com/*"
+
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: restrict-image-registry
 spec:
   validationFailureAction: enforce
+  background: true
   rules:
     - name: allowed-registry
       match:
         resources:
           kinds:
             - Pod
+          namespaces:
+            - default
+            - dev
+            - staging
+      exclude:
+        resources:
+          namespaces:
+          - keda
+          - kube-system
+          - argocd
+          - kyverno
       validate:
-        message: "Only images from myregistry.com allowed"
+        message: "Only images from allowed registry are permitted."
         pattern:
           spec:
             containers:
-              - image: "myregistry.com/*"
+              - image: "docker.io/* | ghcr.io/*"
