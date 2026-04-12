@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: https://github.com/akshayraina999/argo-cd.git
     targetRevision: HEAD
-    path: keda/keda-redis-argocd/argocd
+    path: keda/keda-redis-argocd/manifests
 
   destination:
     server: https://kubernetes.default.svc
