@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: redis-job-producer
+  namespace: kafka
+spec:
+  template:
+    spec:
+      containers:
+        - name: producer
+          image: python:3.11-slim
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              pip install redis && \
+              python - <<EOF
+              import redis
+              r = redis.Redis(host="redis.kafka.svc.cluster.local", port=6379)
+
+              for i in range(50):
+                  r.rpush("jobs", f"job-{i}")
+              EOF
+      restartPolicy: Never
