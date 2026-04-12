@@ -47,6 +47,7 @@ spec:
           - argocd
           - kyverno
           - keda
+          - kafka
       validate:
         message: "Liveness and readiness probes are required."
         pattern:

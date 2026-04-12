@@ -46,6 +46,7 @@ spec:
           - argocd
           - kyverno
           - keda
+          - kafka
       validate:
         message: "Only images from allowed registry are permitted."
         pattern:

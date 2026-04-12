@@ -48,6 +48,7 @@ spec:
           - argocd
           - kyverno
           - keda
+          - kafka
       validate:
         message: "Containers must run as non-root."
         pattern:

@@ -47,6 +47,7 @@ spec:
           - argocd
           - kyverno
           - keda
+          - kafka
       validate:
         message: "Labels 'app' and 'env' are required."
         pattern:

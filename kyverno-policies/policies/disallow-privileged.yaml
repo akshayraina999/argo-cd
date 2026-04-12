@@ -47,6 +47,7 @@ spec:
           - argocd
           - kyverno
           - keda
+          - kafka
       validate:
         message: "Privileged containers are not allowed."
         pattern:
