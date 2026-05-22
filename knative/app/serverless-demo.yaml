@@ -1,0 +1,20 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: knative-serverless-api
+  namespace: default
+spec:
+  template:
+    metadata:
+      annotations:
+        # Aggressive scaling windows configured strictly for local validation loops
+        autoscaling.knative.dev/window: "15s"
+        autoscaling.knative.dev/scale-to-zero-grace-period: "30s"
+    spec:
+      containers:
+      - image: gcr.io/knative-samples/helloworld-go
+        env:
+        - name: TARGET
+          value: "GitOps Serverless Mode Activated"
+        ports:
+        - containerPort: 8080

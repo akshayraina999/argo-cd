@@ -1,0 +1,41 @@
+# We bundle standard stable releases for the runtime
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: knative-core-infra
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/knative/serving/releases/download/knative-v1.13.0/'
+    manifests:
+      - serving-crds.yaml
+      - serving-core.yaml
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: knative-serving
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: knative-networking-kourier
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/knative/net-kourier/releases/download/knative-v1.13.0/'
+    manifests:
+      - kourier.yaml
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: knative-serving
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
